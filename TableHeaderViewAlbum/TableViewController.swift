@@ -16,11 +16,36 @@ class TableViewController: UITableViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
-        let imgView = UIImageView(frame: CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 200))
+        //你想要展示的tableHeaderView
+        let imgView = UIImageView(frame: CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 64))
         imgView.contentMode = .ScaleAspectFill
         imgView.image = UIImage(named: "header")
         
-        self.tableView.tableHeaderView = NirTableHeaderView(subview: imgView, andType: 0)
+        //若含有navigationController
+        //一、取消ScrollViewInsets自动调整
+        self.automaticallyAdjustsScrollViewInsets = false
+        //二、隐藏NavBar
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+        //类型零
+        //let headerView = NirTableHeaderView(subview: imgView, andType: 0)
+        
+        //类型一
+        //let headerView = NirTableHeaderView(subview: imgView, andType: 1)
+        
+        //类型二
+        //let headerView = NirTableHeaderView(subview: imgView, andType: 2)
+        
+        //类型三
+        //let headerView = NirTableHeaderView(subview: imgView, andType: 3)
+        //headerView.tableView = self.tableView
+        //headerView.maximumOffsetY = -90
+        
+        //类型四
+        let headerView = NirTableHeaderView(subview: imgView, andType: 4)
+        
+        self.tableView.tableHeaderView = headerView
         self.tableView.delegate = self
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -57,49 +82,10 @@ class TableViewController: UITableViewController {
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+}
+
+extension UINavigationController {
+    override public func childViewControllerForStatusBarStyle() -> UIViewController? {
+        return self.topViewController
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

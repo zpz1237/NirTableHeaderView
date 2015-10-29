@@ -15,7 +15,7 @@ class NirTableHeaderView: UIView {
     private var type = 0
     
     var tableView: UITableView?
-    var maximumOffsetY: Int?
+    var maximumOffsetY: CGFloat?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -44,12 +44,39 @@ class NirTableHeaderView: UIView {
     }
     
     func layoutHeaderViewForScrollViewOffset(offset: CGPoint) {
-        if (false)
+        switch type {
+        case 0:
+            typeZeroParallax(offset)
+        case 1:
+            typeOneParallax(offset)
+        case 2:
+            typeTwoParallax(offset)
+        case 3:
+            typeThreeParallax(offset)
+        case 4:
+            typeFourParallax(offset)
+        default:
+            ()
+        }
+    }
+    
+    func typeZeroParallax(offset: CGPoint) {
+        var delta: CGFloat = 0
+        var rect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)
+        
+        delta = offset.y
+        rect.origin.y += delta
+        rect.size.height -= delta
+        
+        self.nirScrollview!.frame = rect
+        self.clipsToBounds = false
+    }
+    
+    func typeOneParallax(offset: CGPoint) {
+        if (offset.y > 0)
         {
             
-        }
-        else
-        {
+        } else {
             var delta: CGFloat = 0
             var rect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)
             
@@ -61,14 +88,48 @@ class NirTableHeaderView: UIView {
             self.clipsToBounds = false
         }
     }
+    
+    func typeTwoParallax(offset: CGPoint) {
+
+    }
+
+    func typeThreeParallax(offset: CGPoint) {
+        guard maximumOffsetY != nil && tableView != nil else {
+            print("maximumOffsetY或tableView未传入")
+            return
+        }
+        if offset.y < maximumOffsetY! {
+            tableView?.contentOffset.y = maximumOffsetY!
+        } else {
+            var delta: CGFloat = 0
+            var rect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)
+            
+            delta = offset.y
+            rect.origin.y += delta
+            rect.size.height -= delta
+            
+            self.nirScrollview!.frame = rect
+            self.clipsToBounds = false
+        }
+    }
+    
+    func typeFourParallax(offset: CGPoint) {
+        if offset.y > 0 {
+            var frame = self.nirScrollview!.frame
+            frame.origin.y = offset.y
+            self.nirScrollview?.frame = frame
+            self.clipsToBounds = false
+        } else {
+            var delta: CGFloat = 0
+            var rect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)
+            
+            delta = offset.y
+            rect.origin.y += delta
+            rect.size.height -= delta
+            
+            self.nirScrollview!.frame = rect
+            self.clipsToBounds = false
+        }
+    }
+    
 }
-
-
-
-
-
-
-
-
-
-
